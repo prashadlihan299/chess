@@ -1,0 +1,23 @@
+mills
+oprah
+e2 e4
+d7 d5
+e4 d5
+d8 d5
+b1 c3
+d5 d8
+d2 d4
+b8 c6
+g1 f3
+c8 g4
+d4 d5
+c6 e5
+f3 e5
+g4 d1
+f1 b5
+c7 c6
+d5 c6
+d8 c7
+c6 b7
+e8 d8
+e5 f7
