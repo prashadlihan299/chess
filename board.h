@@ -2,6 +2,7 @@
 #define BOARD_HEADER
 #include "square.h"
 #include "piece.h"
+#include "piecetype.h"
 #include<vector>
 #include<memory>
 class Board{
@@ -22,6 +23,8 @@ public:
 	void resetPiece(int x, int y);
 	bool isKingCheck(Square start, Square end, Square kingPos, bool white);
 	bool canKingMove(Square kingPos, bool white);
+	void reset();
+	void addPiece(PieceType::Name type, Square &square, bool white);
 	// bool canBlock(std::vector<std::vector<Square> > blockSquares, bool white);
 private:
 	void calculateAttacks();

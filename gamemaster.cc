@@ -14,6 +14,8 @@ void GameMaster::initialize(std::string name1, std::string name2){
 }
 
 void GameMaster::play(){
+    updateKingState();
+    observeStateChange();
     while(!cin.eof()){
         bool moved = false;
         
@@ -79,20 +81,7 @@ void GameMaster::play(){
         if(moved) {
             
             textView.displayBoard(board);
-            if(gameState == GameState::WHITE_CHECK){
-                cout<<"White is in check!"<<endl;
-            }
-            else if(gameState == GameState::BLACK_CHECK){
-                cout<<"Black is in check!"<<endl;
-            }
-            else if(gameState == GameState::WHITE_WINS){
-            cout<<"White wins!"<<endl;
-            break;
-        }
-        else if(gameState == GameState::BLACK_WINS){
-            cout<<"Black wins!"<<endl;
-            break;
-        }
+            if(observeStateChange()) break;
             whiteTurn = !whiteTurn;
             }
 
@@ -214,19 +203,127 @@ bool GameMaster::makeMove(Square start, Square end){
             }
     //   cout<<board.getBox(blackKingPos.getX(), blackKingPos.getY()).getWhiteAttack()<<endl;      
     //check if other king is in check
-    if(whiteTurn){
+    updateKingState();
+    
+    return true;
+}
+
+void GameMaster::setup(){
+    string command = "";
+    while(!cin.eof()){
+        textView.displayBoard(board);
+        cout<<"Enter command (quit to exit): "<<endl;
+        cin>>command;
+        if(command == "quit"){
+            break;
+        }
+        if(command == "reset"){
+            board.reset();
+            continue;
+        }
+        if(command.length() != 4){
+            cout<<"Invalid command"<<endl;
+            continue;
+        }
+        if(command[0] != '+' && command[0] != '-'){
+            cout<<"Invalid command"<<endl;
+            continue;
+        }
+        int x = command[2] - 'a';
+        int y = command[3] - '1';
+        
+        if(x>7 || x < 0){
+			std::cout<<"Invalid command"<<std::endl;
+			continue;
+		}
+        if(y>7 || y < 0){
+			std::cout<<"Invalid command"<<std::endl;
+			continue;
+		}
+        Square square = Square(x, y);
+        if(isupper(command[1])){
+            switch(command[1]){
+                case 'Q':
+                board.addPiece(PieceType::QUEEN, square, true);
+                continue;
+                break;
+                case 'K':
+                board.addPiece(PieceType::KING, square, true);
+                whiteKingPos = square;
+                continue;
+                break;
+                case 'B':
+                board.addPiece(PieceType::BISHOP, square, true);
+                continue;
+                break;
+                case 'N':
+                board.addPiece(PieceType::KNIGHT, square, true);
+                continue;
+                break;
+                case 'R':
+                board.addPiece(PieceType::ROOK, square, true);
+                continue;
+                break;
+                case 'P':
+                board.addPiece(PieceType::PAWN, square, true);
+                continue;
+                break;
+                default:
+                cout<<"Invalid choice"<<endl;
+                continue;
+            }
+        }
+        else{
+            switch(command[1]){
+                case 'q':
+                board.addPiece(PieceType::QUEEN, square, false);
+                continue;
+                break;
+                case 'k':
+                board.addPiece(PieceType::KING, square, false);
+                blackKingPos = square;
+                continue;
+                break;
+                case 'b':
+                board.addPiece(PieceType::BISHOP, square, false);
+                continue;
+                break;
+                case 'n':
+                board.addPiece(PieceType::KNIGHT, square, false);
+                continue;
+                break;
+                case 'r':
+                board.addPiece(PieceType::ROOK, square, false);
+                continue;
+                break;
+                case 'p':
+                board.addPiece(PieceType::PAWN, square, false);
+                continue;
+                break;
+                default:
+                cout<<"Invalid choice"<<endl;
+                continue;
+            }
+        }
+        // cout<<"Reached";
+        
+    }
+}
+
+void GameMaster::updateKingState(){
+    
+
         if(board.getBox(blackKingPos.getX(), blackKingPos.getY()).getWhiteAttack() != 0){
             
             gameState = GameState::BLACK_CHECK;
         }
-    }
-    else{
-        
+        // std::cout<<board.getBox(whiteKingPos.getX(), whiteKingPos.getY()).getBlackAttack();
         if(board.getBox(whiteKingPos.getX(), whiteKingPos.getY()).getBlackAttack() != 0){
+            
             gameState = GameState::WHITE_CHECK;
         }
     
-    }
+    
     
     //check if checkmate
     if(gameState == GameState::WHITE_CHECK){
@@ -241,6 +338,22 @@ bool GameMaster::makeMove(Square start, Square end){
           
         }
     }
-    
-    return true;
+}
+
+bool GameMaster::observeStateChange(){
+    if(gameState == GameState::WHITE_CHECK){
+                cout<<"White is in check!"<<endl;
+            }
+            else if(gameState == GameState::BLACK_CHECK){
+                cout<<"Black is in check!"<<endl;
+            }
+            else if(gameState == GameState::WHITE_WINS){
+            cout<<"White wins!"<<endl;
+            return false;
+        }
+        else if(gameState == GameState::BLACK_WINS){
+            cout<<"Black wins!"<<endl;
+            return false;
+        }
+        return true;
 }

@@ -22,6 +22,11 @@ class GameMaster{
         void play();
         bool makeMove(std::string move1, std::string move2);
         bool makeMove(Square start, Square end);
+        void setup();
+        
+    private:
+        void updateKingState();
+        bool observeStateChange();
         
 };
 #endif

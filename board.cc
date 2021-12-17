@@ -57,6 +57,7 @@ void Board::resetBoard(){
 }
 
 void Board::setPiece(Piece *piece){
+   
         pieces[piece->getX()][piece->getY()].reset(piece); 
 }
 
@@ -167,6 +168,7 @@ void Board::makeMove(Square start, Square end){
 }
 
 void Board::calculateAttacks(){
+    
     for(int x=0;x<8;x++){
         for(int y=0;y<8;y++){
             boxes[x][y].resetAttack();
@@ -176,8 +178,10 @@ void Board::calculateAttacks(){
         for(int y=0;y<8;y++){
             
             Piece *piece = getPiece(x, y);
-            if(piece == nullptr) continue;
+            
+            if(piece == nullptr || piece->getInvisible()) continue;
             std::vector<Square> squares = piece->attackSquares(*this);
+            
             for(int i=0;i<squares.size();i++){
                 if(piece->isWhite()){
                      boxes[squares[i].getY()][squares[i].getX()].addWhiteAttack();
@@ -238,7 +242,7 @@ bool Board::canKingMove(Square kingPos, bool white){
                 for(int i=0;i<moves.size();i++){
                     
                     if(!isKingCheck(start, moves[i], kingPos, white)){
-                        // std::cout<<start.getX()<<", "<<start.getY()<<", "<<moves[i].getX()<<", "<<moves[i].getY()<<", "<<std::endl;
+                        std::cout<<start.getX()<<", "<<start.getY()<<", "<<moves[i].getX()<<", "<<moves[i].getY()<<", "<<std::endl;
                         canMove = true;
                         break;
                     }
@@ -251,4 +255,46 @@ bool Board::canKingMove(Square kingPos, bool white){
     }
     
     return canMove;
+}
+
+void Board::reset(){
+    for(int i=0;i<8;i++){
+		for(int j=0;j<8;j++){
+            resetPiece(i, j);
+        }
+	} 
+}
+
+void Board::addPiece(PieceType::Name type, Square &square, bool white){
+     
+    switch(type){
+        case PieceType::QUEEN:
+        setPiece(new Queen(white, square.getX(), square.getY()));
+        break;
+        case PieceType::KING:
+        setPiece(new King(white, square.getX(), square.getY()));
+        if((white && (square.getX() != 4 || square.getY() !=0)) || (!white && (square.getX() != 4 || square.getY() !=7))){
+            pieces[square.getX()][square.getY()]->setCastlingDone(true);
+        }
+        break;
+        case PieceType::BISHOP:
+        setPiece(new Bishop(white, square.getX(), square.getY()));
+        break;
+        case PieceType::KNIGHT:
+        setPiece(new Knight(white, square.getX(), square.getY()));
+        break;
+        case PieceType::ROOK:
+        setPiece(new Rook(white, square.getX(), square.getY()));
+        if((white && ((square.getX() != 0 && square.getX() != 7) || square.getY() !=0)) || (!white && ((square.getX() != 0 && square.getX() != 7) || square.getY() !=7))){
+            pieces[square.getX()][square.getY()]->setCastlingDone(true);
+        }
+        break;
+        case PieceType::PAWN:
+        setPiece(new Pawn(white, square.getX(), square.getY()));
+        break;
+        default:
+        break;
+    }
+
+    calculateAttacks();
 }
