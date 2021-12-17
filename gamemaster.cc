@@ -349,11 +349,11 @@ bool GameMaster::observeStateChange(){
             }
             else if(gameState == GameState::WHITE_WINS){
             cout<<"White wins!"<<endl;
-            return false;
+            return true;
         }
         else if(gameState == GameState::BLACK_WINS){
             cout<<"Black wins!"<<endl;
-            return false;
+            return true;
         }
-        return true;
+        return false;
 }
