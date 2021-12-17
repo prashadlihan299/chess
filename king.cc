@@ -1,4 +1,5 @@
 #include "king.h"
+#include<iostream>
 
 King::King(bool white, int x, int y): Piece(white, x, y){
 	castlingDone = false; 
@@ -15,7 +16,7 @@ King::King(bool white, int x, int y): Piece(white, x, y){
         for(int y=y1; y<=y2;y++){
             int ax = std::abs(x - getX());
             int ay = std::abs(y - getY());
-            if(ax+ay==1){
+            if(ax+ay==1 || (ax==ay && (ax+ay == 2))){
                 squares.push_back(Square(x, y));
             }
         }

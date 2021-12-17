@@ -2,4 +2,29 @@ sahil
 pradhan
 setup
 reset
-
++Qd8
++pa7
++ke7
++pf7
++bg7
++rh7
++bc6
++pe6
++pg6
++nh6
++qg5
++Ph4
++pc3
++Pf3
++Pa2
++pc2
++Pe2
++Rh2
++Ra1
++Kf1
++Ng1
++Bh1
+quit
+play
+a2 a3
+e7 d8

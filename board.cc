@@ -195,6 +195,9 @@ void Board::calculateAttacks(){
 }
 
 bool Board::isKingCheck(Square start, Square end, Square kingPos, bool white){
+    // if(start.getX() ==  4 && start.getY() == 6 && end.getX() == 3 && end.getY() == 7){
+    //                 std::cout<<"Reached"<<std::endl;
+    //             }
     bool check = false;
     bool endNull = pieces[end.getX()][end.getY()] == nullptr;
     if(getPiece(start.getX(), start.getY())->getType() == PieceType::KING){
@@ -237,12 +240,14 @@ bool Board::canKingMove(Square kingPos, bool white){
                 
             
                 std::vector<Square> moves = piece->validMoves(*this);
-             
+                
                 // std::cout<<moves.size()<<std::endl;
                 for(int i=0;i<moves.size();i++){
-                    
+                    // if(piece->getType() == PieceType::KING){
+                    //     std::cout<<start.getX()<<", "<<start.getY()<<", "<<moves[i].getX()<<", "<<moves[i].getY()<<", "<<std::endl;
+                    // }
                     if(!isKingCheck(start, moves[i], kingPos, white)){
-                        std::cout<<start.getX()<<", "<<start.getY()<<", "<<moves[i].getX()<<", "<<moves[i].getY()<<", "<<std::endl;
+                        // std::cout<<start.getX()<<", "<<start.getY()<<", "<<moves[i].getX()<<", "<<moves[i].getY()<<", "<<std::endl;
                         canMove = true;
                         break;
                     }
