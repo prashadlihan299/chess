@@ -1,12 +1,30 @@
 sahil
 pradhan
-c2 c4
-b7 b5
-c4 b5
-c7 c5
-b5 c6
-b8 a6
-c6 c7
-d7 d5
-c7 d8
-q
+setup
+reset
++ra8
++bc8
++kd8
++ng8
++pg7
++qc6
++pe6
++nf6
++pc5
++Qf5
++pa4
++Pc4
++Pa3
++Pe3
++Ph3
++bb2
++rg2
++Ph2
++Ra1
++Bc1
++Bf1
++Kg1
++Rh1
+quit
+play
+f1 g2
